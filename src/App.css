@@ -1,6 +1,20 @@
 .busMarker {
-  width: 40px;
-  height: 40px;
+	width: 40px;
+	height: 40px;
+	background-color: red;
+	border-radius: 50%;
+}
+
+.busStopBtn {
+  border: 2px;
+  border-color: white;
   background-color: red;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
+}
+
+.busStopIcon {
+	width: 20px;
+	height: 20px;
 }

@@ -6,9 +6,9 @@
 }
 
 .busStopBtn {
-  border: 2px;
-  border-color: white;
-  background-color: red;
+  border: 3px solid;
+  border-color: red;
+  background-color: white;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -16,5 +16,6 @@
 
 .busStopIcon {
 	width: 20px;
-	height: 20px;
+  height: 20px;
+  display: none;
 }

@@ -49,15 +49,6 @@ export const fetchStopTimes = async (route, stopId) => {
     }
 };
 
-
-function sortFunction(a, b) {
-    if (a[0] === b[0]) {
-        return 0;
-    }
-    else {
-        return (a[0] < b[0]) ? -1 : 1;
-    }
-}
 // WIP
 export const fetchRoutePath = async (routeNum) => {
  
@@ -77,9 +68,9 @@ export const fetchRoutePath = async (routeNum) => {
         //     ))
         // }
         console.log(url)
-        console.log(route.path);
+        console.log(route);
 
-        return route.path
+        return route
         
     } catch (error) {
         return error;

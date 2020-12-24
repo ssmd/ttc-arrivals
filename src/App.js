@@ -6,15 +6,15 @@ import PolylineOverlay from './PolyLineOverlay'
 import { fetchBusLocation, fetchRouteStops, fetchStopTimes, fetchRoutePath } from "./api";
 
 function App() {
-	const busRoute = 35;
+	const busRoute = '60';
 
 	const [viewport, setviewport] = useState({
 		latitude: 43.6534817,
 		longitude: -79.3839347,
-		width: "100vw",
+		width: "100%",
 		height: "100vh",
+		bearing: -16,
 		zoom: 10,
-		bearing: -17,
 	});
 
 	const [busLocation, setBusLocation] = useState([]);
@@ -38,7 +38,7 @@ function App() {
 	}, []);
 
 	useEffect(() => {
-		console.log("RoutePath", routePath);
+		console.log("RoutePath", routePath.path);
 	}, [busLocation])
 
 	useEffect(() => {
@@ -71,7 +71,8 @@ function App() {
 
 			<ReactMapGL
 				{...viewport}
-				mapboxApiAccessToken="pk.eyJ1Ijoic2V5b24xMDAiLCJhIjoiY2tpejhqcTh5MWE4djJ5cDNpaHUxMzBvcyJ9.7yaG59iuW_HA0xr4wY6btQ"
+				
+				mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
 				mapStyle="mapbox://styles/seyon100/ckiz9arnc0sxe19o51hatbmuv"
 				containerStyle={{ flex: 1 }}
 				onViewportChange={(viewport) => {
@@ -84,10 +85,10 @@ function App() {
 					setviewport(viewport);
 				}}
 			>
-				{/* Showpath og route */}
-				{routePath.length > 0 ?
-					routePath.map(({point}) => (
-						<PolylineOverlay points={point.map((p) => ([Number(p.lon), Number(p.lat)]))}/>
+				{/* Show path on route */}
+				{routePath.path?.length > 0 ?
+					routePath.path.map(({point}, i) => (
+						<PolylineOverlay key={i} points={point.map((p) => ([Number(p.lon), Number(p.lat)]))}/>
 					))
 				: null
 				}
@@ -131,34 +132,34 @@ function App() {
 						<div>
 							<h2>{selectedStop.title}</h2>
 							{stopTimes?.length > 0 ? (
-								stopTimes.map((route) => (
-									<>
+								stopTimes.map((route,i) => (
+									<div key={i}>
 										<p>
 											<strong>{route?.title}</strong>
 										</p>
 										{route.prediction?.length > 0
-											? route.prediction.map((bus) => (
-													<>
+											? route.prediction.map((bus,j) => (
+													<div key={j}>
 														<p>{`in ${bus.minutes} minutes`}</p>
-													</>
+													</div>
 											  ))
 											: ""}
-									</>
+									</div>
 								))
 							) : (
-								<>
+								<div>
 									<p>
 										<strong>{stopTimes?.title}</strong>
 									</p>
 									{stopTimes?.prediction?.length > 0
-										? stopTimes.prediction.map((bus) => (
-												<>
+										? stopTimes.prediction.map((bus,j) => (
+												<div key={j}>
 													{console.log(bus)}
 													<p>{`in ${bus.minutes} minutes`}</p>
-												</>
+												</div>
 										  ))
 										: ""}
-								</>
+								</div>
 							)}
 						</div>
 					</Popup>

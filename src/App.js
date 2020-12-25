@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import ReactMapGL, { Marker, Popup, NavigationControl, ScaleControl, FullscreenControl, Source, Layer } from "react-map-gl";
 import "./App.css";
 
-import { fetchBusLocation, fetchStopTimes, fetchRouteInfo } from "./api";
+import { fetchBusLocation, fetchStopTimes, fetchRouteInfo, fetchAllRoutes} from "./api";
 import Stops from "./components/Stops";
 import Path from "./components/Path";
 import BusLocation from "./components/BusLocation";
 
 function App() {
-	const busRoute = '60';
+	//const busRoute = '60';
 
 	const [viewport, setviewport] = useState({
 		latitude: 43.6534817,
@@ -21,25 +21,39 @@ function App() {
 
 	const [busLocation, setBusLocation] = useState([]);
 	const [routeInfo, setRouteInfo] = useState([]);
+	const [allRoutes, setAllRoutes] = useState([]);
+	const [busRoute, setBusRoute] = useState(5);
 	const [selectedStop, setSelectedStop] = useState(null);
 	const [stopTimes, setStopTimes] = useState({});
 
 	useEffect(() => {
 		const fetchAPI = async () => {
-			setBusLocation(await fetchBusLocation(busRoute));
-			setRouteInfo(await fetchRouteInfo(busRoute));	
+			setAllRoutes(await fetchAllRoutes());
 		};
+		fetchAPI();
+	}, []);
 
+	useEffect(() => {
+		const fetchAPI = async () => {
+			setRouteInfo(await fetchRouteInfo(busRoute));
+		};
+		fetchAPI();
+	}, [busRoute]);
+
+	useEffect(() => {
+		const fetchAPI = async () => {
+			setBusLocation(await fetchBusLocation(busRoute));
+		};
 		fetchAPI();
 		const interval = setInterval(() => fetchAPI(), 5000);
 		return () => {
 			clearInterval(interval);
 		};
-	}, []);
+	}, [busRoute]);
 
 	useEffect(() => {
 		const fetchAPI = async () => {
-			setStopTimes(await fetchStopTimes(busRoute, selectedStop?.stopId));
+			selectedStop && setStopTimes(await fetchStopTimes(busRoute, selectedStop?.stopId));
 		};
 		fetchAPI();
 		const interval = setInterval(() => fetchAPI(), 5000);
@@ -66,10 +80,24 @@ function App() {
 		setSelectedStop(stop);
 	}
 
+	const handleRouteChange = (event) => {
+		setBusRoute(event.target.innerHTML);
+		console.log(event.target.innerHTML, busRoute)
+	}
+
 
 
 	return (
 		<div className="App">
+
+			<div className="infoBox">
+				{allRoutes?.length > 0 ?
+					allRoutes.map(({tag, title}) => (
+						<div key={tag} className="routeNum" title={title} onClick={handleRouteChange}>{tag}</div>
+					))
+				: null
+				}
+			</div>
 
 			<ReactMapGL
 				{...viewport}
@@ -87,6 +115,8 @@ function App() {
 					setviewport(viewport);
 				}}
 			>
+
+
 				<Path path={routeInfo.path}></Path>				
 				
 				<Stops stops={routeInfo.stop} stopClicked={stopClicked}></Stops>
@@ -105,8 +135,8 @@ function App() {
 					>
 						<div>
 							<h2>{selectedStop.title}</h2>
-							{stopTimes?.length > 0 ? (
-								stopTimes.map((route,i) => (
+							{stopTimes?.direction?.length > 0 ? (
+								stopTimes.direction.map((route,i) => (
 									<div key={i}>
 										<p>
 											<strong>{route?.title}</strong>
@@ -125,16 +155,19 @@ function App() {
 									<p>
 										<strong>{stopTimes?.title}</strong>
 									</p>
-									{stopTimes?.prediction?.length > 0
-										? stopTimes.prediction.map((bus,j) => (
+									{stopTimes?.direction?.prediction?.length > 0
+										? stopTimes.direction.prediction.map((bus,j) => (
 												<div key={j}>
 													{console.log(bus)}
 													<p>{`in ${bus.minutes} minutes`}</p>
 												</div>
 										  ))
-										: ""}
+										: ""
+									}
+									
 								</div>
 							)}
+							
 						</div>
 					</Popup>
 				) : (

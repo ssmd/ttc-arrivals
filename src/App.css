@@ -19,3 +19,35 @@
   height: 20px;
   display: none;
 }
+
+
+.infoBox{
+  background-color: white;
+  position: absolute;
+  z-index: 1000;
+  width: 400px;
+  max-height: 500px;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
+  display: flex;
+  flex-flow: row wrap;
+  align-content: space-between;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.routeNum {
+  height: 50px;
+  width: 50px;
+  line-height: 50px;
+  text-align: center;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  margin: 3px;
+  font-size: 25px;
+  font-weight: 600;
+  cursor: pointer;
+}

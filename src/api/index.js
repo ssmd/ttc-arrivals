@@ -34,35 +34,34 @@ export const fetchRouteInfo = async (route) => {
 };
 
 export const fetchStopTimes = async (route, stopId) => {
-    let url = `${api}command=predictions&a=${agency}&r=${route}&stopId=${stopId}`;
+    let url = `${api}command=predictions&a=${agency}&routeTag=${route}&stopId=${stopId}`;
     try {
         const{
-            data: {predictions: {direction}},
+            data: {predictions},
         } = await axios.get(url);
-        // console.log(url)
-        // console.log(direction)
+        console.log(url)
+        console.log(predictions)
 
-        return direction
+        return predictions
         
     } catch (error) {
         return error;
     }
 };
 
-// // WIP
-// export const fetchRoutePath = async (routeNum) => {
+export const fetchAllRoutes = async () => {
  
-//     let url = `${api}command=routeConfig&a=${agency}&r=${routeNum}`;
-//     try {
-//         const{
-//             data: {route},
-//         } = await axios.get(url);
-//         console.log(url)
-//         console.log(route);
+    let url = `${api}command=routeList&a=${agency}`;
+    try {
+        const{
+            data: {route},
+        } = await axios.get(url);
+        console.log(url)
+        console.log(route);
 
-//         return route
+        return route
         
-//     } catch (error) {
-//         return error;
-//     }
-// };
+    } catch (error) {
+        return error;
+    }
+};

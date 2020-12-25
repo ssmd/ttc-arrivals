@@ -18,15 +18,15 @@ export const fetchBusLocation = async (route) => {
     }
 };
 
-export const fetchRouteStops = async (route) => {
+export const fetchRouteInfo = async (route) => {
     let url = `${api}command=routeConfig&a=${agency}&r=${route}`;
     try {
         const{
-            data: {route: {stop}},
+            data: {route},
         } = await axios.get(url);
         // console.log(stop)
 
-        return stop
+        return route
         
     } catch (error) {
         return error;
@@ -49,30 +49,20 @@ export const fetchStopTimes = async (route, stopId) => {
     }
 };
 
-// WIP
-export const fetchRoutePath = async (routeNum) => {
+// // WIP
+// export const fetchRoutePath = async (routeNum) => {
  
-    let url = `${api}command=routeConfig&a=${agency}&r=${routeNum}`;
-    try {
-        const{
-            data: {route},
-        } = await axios.get(url);
+//     let url = `${api}command=routeConfig&a=${agency}&r=${routeNum}`;
+//     try {
+//         const{
+//             data: {route},
+//         } = await axios.get(url);
+//         console.log(url)
+//         console.log(route);
 
-        // let routepath = [];
-
-        // if(route.path?.length > 0){
-        //     route.path.map(({point}) => (
-        //         point.map((p) => (
-        //             routepath.push([Number(p.lon), Number(p.lat)])
-        //         ))
-        //     ))
-        // }
-        console.log(url)
-        console.log(route);
-
-        return route
+//         return route
         
-    } catch (error) {
-        return error;
-    }
-};
+//     } catch (error) {
+//         return error;
+//     }
+// };

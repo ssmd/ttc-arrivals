@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ReactMapGL, { Marker, Popup, NavigationControl, ScaleControl, FullscreenControl, Source, Layer } from "react-map-gl";
 import "./App.css";
-import PolylineOverlay from './PolyLineOverlay'
 
-import { fetchBusLocation, fetchRouteStops, fetchStopTimes, fetchRoutePath } from "./api";
+import { fetchBusLocation, fetchStopTimes, fetchRouteInfo } from "./api";
+import Stops from "./components/Stops";
+import Path from "./components/Path";
+import BusLocation from "./components/BusLocation";
 
 function App() {
 	const busRoute = '60';
@@ -18,28 +20,22 @@ function App() {
 	});
 
 	const [busLocation, setBusLocation] = useState([]);
-	const [routePath, setRoutePath] = useState([]);
-	const [routeStops, setRouteStops] = useState([]);
+	const [routeInfo, setRouteInfo] = useState([]);
 	const [selectedStop, setSelectedStop] = useState(null);
 	const [stopTimes, setStopTimes] = useState({});
 
 	useEffect(() => {
-		const fetchBusAPI = async () => {
+		const fetchAPI = async () => {
 			setBusLocation(await fetchBusLocation(busRoute));
-			setRoutePath(await fetchRoutePath(busRoute))
-			setRouteStops(await fetchRouteStops(busRoute));	
+			setRouteInfo(await fetchRouteInfo(busRoute));	
 		};
 
-		fetchBusAPI();
-		const interval = setInterval(() => fetchBusAPI(), 5000);
+		fetchAPI();
+		const interval = setInterval(() => fetchAPI(), 5000);
 		return () => {
 			clearInterval(interval);
 		};
 	}, []);
-
-	useEffect(() => {
-		console.log("RoutePath", routePath.path);
-	}, [busLocation])
 
 	useEffect(() => {
 		const fetchAPI = async () => {
@@ -66,6 +62,12 @@ function App() {
 		};
 	}, []);
 
+	const stopClicked = (stop) => {
+		setSelectedStop(stop);
+	}
+
+
+
 	return (
 		<div className="App">
 
@@ -76,48 +78,20 @@ function App() {
 				mapStyle="mapbox://styles/seyon100/ckiz9arnc0sxe19o51hatbmuv"
 				containerStyle={{ flex: 1 }}
 				onViewportChange={(viewport) => {
-					if (viewport.zoom < 10) {
-						viewport.zoom = 10;
-					} else if (viewport.zoom > 18) {
-						viewport.zoom = 18;
+					if (viewport.pitch < 0) {
+						viewport.pitch = 0;
+					} else if (viewport.pitch > 25) {
+						viewport.pitch = 25;
 					}
 
 					setviewport(viewport);
 				}}
 			>
-				{/* Show path on route */}
-				{routePath.path?.length > 0 ?
-					routePath.path.map(({point}, i) => (
-						<PolylineOverlay key={i} points={point.map((p) => ([Number(p.lon), Number(p.lat)]))}/>
-					))
-				: null
-				}
+				<Path path={routeInfo.path}></Path>				
+				
+				<Stops stops={routeInfo.stop} stopClicked={stopClicked}></Stops>
 
-				{/* Show Stops */}
-				{routeStops?.length > 0
-					? routeStops.map(({ stopId, lat, lon, title }) => (
-							<Marker key={stopId} latitude={Number(lat)} longitude={Number(lon)} offsetLeft={-10} offsetTop={-10}>
-								<button
-									className="busStopBtn"
-									onClick={(e) => {
-										e.preventDefault();
-										setSelectedStop({ stopId, title, lat, lon });
-									}}
-								>
-									<div className="busStopIcon" />
-								</button>
-							</Marker>
-					  ))
-					: ""}
-
-				{/* Show Bus Location */}
-				{busLocation?.length > 0
-					? busLocation.map(({ id, lat, lon }) => (
-							<Marker key={id} latitude={Number(lat)} longitude={Number(lon)} offsetLeft={-20} offsetTop={-20}>
-								<img className="busMarker" src="bus.png" />
-							</Marker>
-					  ))
-					: ""}
+				<BusLocation busLocation={busLocation}></BusLocation>
 
 				{/* Show Bus Time info when bus stop is clicked */}
 				{selectedStop ? (
@@ -164,7 +138,7 @@ function App() {
 						</div>
 					</Popup>
 				) : (
-					""
+					null
 				)}
 
 				{/* Map Navigation Buttons */}
@@ -178,27 +152,6 @@ function App() {
 					<ScaleControl maxWidth={100} unit={"metric"} />
 				</div>
 				
-{/* 
-				<Layer
-					id="3d-buildings"
-					source="composite"
-					source-layer="building"
-					filter={["==", "extrude", "true"]}
-					type="fill-extrusion"
-					minZoom={6}
-					paint={{
-						"fill-extrusion-color": "#aaa",
-						"fill-extrusion-height": {
-							type: "identity",
-							property: "height",
-						},
-						"fill-extrusion-base": {
-							type: "identity",
-							property: "min_height",
-						},
-						"fill-extrusion-opacity": 0.6,
-					}}
-				/> */}
 			</ReactMapGL>
 		</div>
 	);

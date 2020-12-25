@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import ReactMapGL, { Marker, Popup, NavigationControl, ScaleControl, FullscreenControl, Source, Layer } from "react-map-gl";
+import ReactMapGL, {Popup, NavigationControl, ScaleControl, FullscreenControl } from "react-map-gl";
 import "./App.css";
 
 import { fetchBusLocation, fetchStopTimes, fetchRouteInfo, fetchAllRoutes} from "./api";
 import Stops from "./components/Stops";
 import Path from "./components/Path";
 import BusLocation from "./components/BusLocation";
+import InfoBox from "./components/InfoBox";
 
 function App() {
 	//const busRoute = '60';
@@ -13,7 +14,7 @@ function App() {
 	const [viewport, setviewport] = useState({
 		latitude: 43.6534817,
 		longitude: -79.3839347,
-		width: "100%",
+		width: "100vw",
 		height: "100vh",
 		bearing: -16,
 		zoom: 10,
@@ -45,7 +46,7 @@ function App() {
 			setBusLocation(await fetchBusLocation(busRoute));
 		};
 		fetchAPI();
-		const interval = setInterval(() => fetchAPI(), 5000);
+		const interval = setInterval(() => fetchAPI(), 20000);
 		return () => {
 			clearInterval(interval);
 		};
@@ -56,12 +57,12 @@ function App() {
 			selectedStop && setStopTimes(await fetchStopTimes(busRoute, selectedStop?.stopId));
 		};
 		fetchAPI();
-		const interval = setInterval(() => fetchAPI(), 5000);
+		const interval = setInterval(() => fetchAPI(), 20000);
 		return () => {
 			clearInterval(interval);
 		};
 		
-	}, [selectedStop]);
+	}, [selectedStop, busRoute]);
 
 	useEffect(() => {
 		const listener = (e) => {
@@ -81,8 +82,7 @@ function App() {
 	}
 
 	const handleRouteChange = (event) => {
-		setBusRoute(event.target.innerHTML);
-		console.log(event.target.innerHTML, busRoute)
+		setBusRoute(event.target.getAttribute('tag'));
 	}
 
 
@@ -90,18 +90,11 @@ function App() {
 	return (
 		<div className="App">
 
-			<div className="infoBox">
-				{allRoutes?.length > 0 ?
-					allRoutes.map(({tag, title}) => (
-						<div key={tag} className="routeNum" title={title} onClick={handleRouteChange}>{tag}</div>
-					))
-				: null
-				}
-			</div>
+			<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange}/>
 
 			<ReactMapGL
+				className="map"
 				{...viewport}
-				
 				mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
 				mapStyle="mapbox://styles/seyon100/ckiz9arnc0sxe19o51hatbmuv"
 				containerStyle={{ flex: 1 }}
@@ -154,6 +147,9 @@ function App() {
 								<div>
 									<p>
 										<strong>{stopTimes?.title}</strong>
+									</p>
+									<p>
+										<strong>{stopTimes?.direction?.title}</strong>
 									</p>
 									{stopTimes?.direction?.prediction?.length > 0
 										? stopTimes.direction.prediction.map((bus,j) => (

@@ -1,3 +1,4 @@
+
 .busMarker {
 	width: 40px;
 	height: 40px;
@@ -28,7 +29,6 @@
   width: 400px;
   max-height: 500px;
   margin: 20px;
-  padding: 20px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
   display: flex;
@@ -36,6 +36,50 @@
   align-content: space-between;
   justify-content: center;
   overflow-y: auto;
+}
+
+.infoBoxHeader{
+  width: 100%;
+  padding: 20px 20px 0 20px;
+  position: sticky;
+  background: white;
+  top: 0;
+  z-index: 2;
+}
+
+.infoBoxTitle {
+  font-size: 30px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.logo {
+  height: 50px;
+}
+
+.infoBoxDivider{
+  height: 2px;
+  border-width: 0;
+  background-color: rgb(177, 174, 174);
+}
+
+.route {
+  height: 70px;
+  width: 100%;
+  margin: 5px 10px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  cursor: pointer;
+}
+
+.routeTitle{
+  height: 50px;
+  line-height: 50px;
+  font-size: 25px;
+  font-weight: 600;
+  margin: 10px;
 }
 
 .routeNum {
@@ -46,8 +90,27 @@
   background-color: red;
   color: white;
   border-radius: 50%;
-  margin: 3px;
+  margin: 10px;
   font-size: 25px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.tags {
+  position: relative;
+  width: 100%;
+}
+
+.tag {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  width: fit-content;
+  margin: 10px;
+  padding: 3px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
 }

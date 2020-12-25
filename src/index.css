@@ -1,3 +1,20 @@
 * {
   font-family: "Helvetica Neue", OpenSans, Arial, sans-serif;
+  margin:0;
+}
+
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(192, 192, 192);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
 }

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import ReactMapGL, {Popup, NavigationControl, ScaleControl, FullscreenControl } from "react-map-gl";
+import ReactMapGL, {NavigationControl, ScaleControl, FullscreenControl } from "react-map-gl";
 import "./App.css";
 
-import { fetchBusLocation, fetchStopTimes, fetchRouteInfo, fetchAllRoutes} from "./api";
+import { fetchBusLocation, fetchStopTimes, fetchRouteInfo, fetchAllRoutes } from "./api";
 import Stops from "./components/Stops";
 import Path from "./components/Path";
 import BusLocation from "./components/BusLocation";
 import InfoBox from "./components/InfoBox";
+import StopBox from "./components/StopBox";
 
 function App() {
 	//const busRoute = '60';
@@ -61,7 +62,6 @@ function App() {
 		return () => {
 			clearInterval(interval);
 		};
-		
 	}, [selectedStop, busRoute]);
 
 	useEffect(() => {
@@ -79,18 +79,19 @@ function App() {
 
 	const stopClicked = (stop) => {
 		setSelectedStop(stop);
-	}
+	};
 
 	const handleRouteChange = (event) => {
-		setBusRoute(event.target.getAttribute('tag'));
-	}
-
-
+		setBusRoute(event.target.getAttribute("tag"));
+	};
 
 	return (
 		<div className="App">
-
-			<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange}/>
+			{selectedStop ? (
+				<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} />
+			) : (
+				<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange} />
+			)}
 
 			<ReactMapGL
 				className="map"
@@ -108,45 +109,11 @@ function App() {
 					setviewport(viewport);
 				}}
 			>
+				<Path path={routeInfo.paths}></Path>
 
-
-				<Path path={routeInfo.paths}></Path>				
-				
 				<Stops stops={routeInfo.stops} stopClicked={stopClicked}></Stops>
 
 				<BusLocation busLocation={busLocation}></BusLocation>
-
-				{/* Show Bus Time info when bus stop is clicked */}
-				{selectedStop ? (
-					<Popup
-						latitude={Number(selectedStop.lat)}
-						longitude={Number(selectedStop.lon)}
-						onClose={() => {
-							setSelectedStop(null);
-							setStopTimes({});
-						}}
-					>
-						<div>
-							<h2>{selectedStop.title}</h2>
-							{stopTimes?.length > 0 ? (
-								stopTimes.map((route,i) => (
-									<div key={i}>
-										{route.values?.length > 0
-											? route.values.map((bus,j) => (
-													<div key={j}>
-														<p><strong>{bus.branch} </strong>{`in ${bus.minutes} minutes`}</p>
-													</div>
-											  ))
-											: ""}
-									</div>
-								))
-							) : (null)}
-							
-						</div>
-					</Popup>
-				) : (
-					null
-				)}
 
 				{/* Map Navigation Buttons */}
 				<div style={{ position: "absolute", right: 10, bottom: 70 }}>
@@ -158,7 +125,6 @@ function App() {
 				<div style={{ position: "absolute", right: 60, bottom: 30 }}>
 					<ScaleControl maxWidth={100} unit={"metric"} />
 				</div>
-				
 			</ReactMapGL>
 		</div>
 	);

@@ -21,13 +21,23 @@
   display: none;
 }
 
+.error {
+  text-align: center;
+  padding: 10px;
+}
+
+
+
+
+
+
 
 .infoBox{
   background-color: white;
   position: absolute;
   z-index: 1000;
   width: 400px;
-  max-height: 500px;
+  max-height: calc(100% - 60px);
   margin: 20px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
@@ -54,7 +64,7 @@
 }
 
 .logo {
-  height: 50px;
+  height: 40px;
 }
 
 .infoBoxDivider{
@@ -93,7 +103,6 @@
   margin: 10px;
   font-size: 25px;
   font-weight: 600;
-  cursor: pointer;
 }
 
 .tags {
@@ -113,4 +122,102 @@
   bottom: 0;
   right: 0;
   z-index: 1;
+}
+
+
+
+.stopBox {
+  background-color: white;
+  position: absolute;
+  z-index: 1000;
+  width: 400px;
+  max-height: calc(100% - 60px);
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
+  display: flex;
+  flex-flow: row wrap;
+  align-content: space-between;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.closeBtn {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-weight: bold;
+  background-color: red;
+  border-radius: 50%;
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.stopBoxHeader{
+  width: 100%;
+  padding: 20px 20px 0 20px;
+  position: sticky;
+  background: white;
+  top: 0;
+  z-index: 2;
+}
+
+.stopBoxTitle {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.stopBoxDivider{
+  height: 1px;
+  border-width: 0;
+  background-color: rgb(177, 174, 174);
+}
+
+.busBranch {
+  min-height: 40px;
+  min-width: 40px;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  margin: auto 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.busTimes {
+  width: calc(100% - 20px);
+  padding: 10px 0;
+}
+
+.busTime {
+  min-height: 60px;
+  height: max-content;  
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
+  display: flex;
+  
+}
+
+.busDirection {
+  height: max-content;
+  font-size: 16px;
+  margin: auto;
+}
+
+.busMinutes {
+  height: max-content;
+  min-width: 55px;
+  font-size: 16px;
+  margin: auto 3px;
+  font-weight: bold;
 }

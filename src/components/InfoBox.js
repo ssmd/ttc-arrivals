@@ -4,8 +4,8 @@ function InfoBox({routes, handleRouteChange}) {
     return (
         <div className="infoBox">
 			<div className="infoBoxHeader">
-				<img className="logo" src="ttc.png"/>
-				<div className="infoBoxTitle">Live Bus Map</div>
+				<img className="logo" src="ttc.png" alt="logo"/>
+				<div className="infoBoxTitle">Live Transit Map</div>
 				<hr className="infoBoxDivider"/>
 			</div>
 			{routes?.length > 0 ?
@@ -23,7 +23,7 @@ function InfoBox({routes, handleRouteChange}) {
 						</div>
 					</div>
 				))
-			: null
+			: <div className="error">There was an Error fetching transit information. Please try again later.</div>
 			}
 		</div>
     )

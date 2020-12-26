@@ -9,16 +9,16 @@ function InfoBox({routes, handleRouteChange}) {
 				<hr className="infoBoxDivider"/>
 			</div>
 			{routes?.length > 0 ?
-				routes.map(({tag, title}) => (
-					<div tag={tag} key={tag} className="route" onClick={handleRouteChange}>
-						<div tag={tag} className="routeNum">{tag}</div>
-						<h1 tag={tag} className="routeTitle">{title?.split("-", 2)[1].split("Night")[0].split("Express")[0]}</h1>
-						<div tag={tag} className="tags">
+				routes.map(({id, title}) => (
+					<div tag={id} key={id} className="route" onClick={handleRouteChange}>
+						<div tag={id} className="routeNum">{id}</div>
+						<h1 tag={id} className="routeTitle">{title?.split("-", 2)[1].split("Night")[0].split("Express")[0]}</h1>
+						<div tag={id} className="tags">
 						{title.split("Express").length > 1 && 
-							<div tag={tag} className="tag">Express</div>
+							<div tag={id} className="tag">Express</div>
 						}
 						{title.split("Night").length > 1 && 
-							<div tag={tag} className="tag">Night</div>
+							<div tag={id} className="tag">Night</div>
 						}
 						</div>
 					</div>

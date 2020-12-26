@@ -1,17 +1,19 @@
 import axios from "axios";
 
-const api = "http://webservices.nextbus.com/service/publicJSONFeed?";
+//const api = "http://webservices.nextbus.com/service/publicJSONFeed?";
+const api = "http://restbus.info/api/";
 const agency = "ttc"
 
 
 export const fetchBusLocation = async (route) => {
-    let url = `${api}command=vehicleLocations&a=${agency}&r=${route}`;
+    //let url = `${api}command=vehicleLocations&a=${agency}&r=${route}`;
+    let url = `${api}agencies/${agency}/routes/${route}/vehicles`;
     try {
         const{
-            data: {vehicle},
+            data
         } = await axios.get(url);
-        // console.log(vehicle)
-        return vehicle
+
+        return data
         
     } catch (error) {
         return error;
@@ -19,14 +21,14 @@ export const fetchBusLocation = async (route) => {
 };
 
 export const fetchRouteInfo = async (route) => {
-    let url = `${api}command=routeConfig&a=${agency}&r=${route}`;
+    //let url = `${api}command=routeConfig&a=${agency}&r=${route}`;
+    let url = `${api}agencies/${agency}/routes/${route}`;
     try {
         const{
-            data: {route},
+            data
         } = await axios.get(url);
-        // console.log(stop)
 
-        return route
+        return data
         
     } catch (error) {
         return error;
@@ -34,15 +36,16 @@ export const fetchRouteInfo = async (route) => {
 };
 
 export const fetchStopTimes = async (route, stopId) => {
-    let url = `${api}command=predictions&a=${agency}&routeTag=${route}&stopId=${stopId}`;
+    //let url = `${api}command=predictions&a=${agency}&routeTag=${route}&stopId=${stopId}`;
+    let url = `${api}agencies/${agency}/routes/${route}/stops/${stopId}/predictions`;
     try {
         const{
-            data: {predictions},
+            data,
         } = await axios.get(url);
         console.log(url)
-        console.log(predictions)
+        console.log(data)
 
-        return predictions
+        return data
         
     } catch (error) {
         return error;
@@ -51,15 +54,17 @@ export const fetchStopTimes = async (route, stopId) => {
 
 export const fetchAllRoutes = async () => {
  
-    let url = `${api}command=routeList&a=${agency}`;
+    //let url = `${api}command=routeList&a=${agency}`;
+    let url = `${api}agencies/${agency}/routes/`;
+
     try {
         const{
-            data: {route},
+            data
         } = await axios.get(url);
         console.log(url)
-        console.log(route);
+        console.log(data);
 
-        return route
+        return data
         
     } catch (error) {
         return error;

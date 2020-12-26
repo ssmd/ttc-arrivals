@@ -23,7 +23,7 @@ function App() {
 	const [busLocation, setBusLocation] = useState([]);
 	const [routeInfo, setRouteInfo] = useState([]);
 	const [allRoutes, setAllRoutes] = useState([]);
-	const [busRoute, setBusRoute] = useState(5);
+	const [busRoute, setBusRoute] = useState(60);
 	const [selectedStop, setSelectedStop] = useState(null);
 	const [stopTimes, setStopTimes] = useState({});
 
@@ -54,7 +54,7 @@ function App() {
 
 	useEffect(() => {
 		const fetchAPI = async () => {
-			selectedStop && setStopTimes(await fetchStopTimes(busRoute, selectedStop?.stopId));
+			selectedStop && setStopTimes(await fetchStopTimes(busRoute, selectedStop?.id));
 		};
 		fetchAPI();
 		const interval = setInterval(() => fetchAPI(), 20000);
@@ -110,9 +110,9 @@ function App() {
 			>
 
 
-				<Path path={routeInfo.path}></Path>				
+				<Path path={routeInfo.paths}></Path>				
 				
-				<Stops stops={routeInfo.stop} stopClicked={stopClicked}></Stops>
+				<Stops stops={routeInfo.stops} stopClicked={stopClicked}></Stops>
 
 				<BusLocation busLocation={busLocation}></BusLocation>
 
@@ -128,41 +128,19 @@ function App() {
 					>
 						<div>
 							<h2>{selectedStop.title}</h2>
-							{stopTimes?.direction?.length > 0 ? (
-								stopTimes.direction.map((route,i) => (
+							{stopTimes?.length > 0 ? (
+								stopTimes.map((route,i) => (
 									<div key={i}>
-										<p>
-											<strong>{route?.title}</strong>
-										</p>
-										{route.prediction?.length > 0
-											? route.prediction.map((bus,j) => (
+										{route.values?.length > 0
+											? route.values.map((bus,j) => (
 													<div key={j}>
-														<p>{`in ${bus.minutes} minutes`}</p>
+														<p><strong>{bus.branch} </strong>{`in ${bus.minutes} minutes`}</p>
 													</div>
 											  ))
 											: ""}
 									</div>
 								))
-							) : (
-								<div>
-									<p>
-										<strong>{stopTimes?.title}</strong>
-									</p>
-									<p>
-										<strong>{stopTimes?.direction?.title}</strong>
-									</p>
-									{stopTimes?.direction?.prediction?.length > 0
-										? stopTimes.direction.prediction.map((bus,j) => (
-												<div key={j}>
-													{console.log(bus)}
-													<p>{`in ${bus.minutes} minutes`}</p>
-												</div>
-										  ))
-										: ""
-									}
-									
-								</div>
-							)}
+							) : (null)}
 							
 						</div>
 					</Popup>

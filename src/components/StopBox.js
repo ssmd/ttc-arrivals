@@ -1,6 +1,6 @@
 import React from "react";
 
-function StopBox({selectedStop, stopTimes, setSelectedStop, setStopTimes}) {
+function StopBox({selectedStop, stopTimes, setSelectedStop, setStopTimes, route}) {
 	return (
 		<div className="stopBox">
             <div className="stopBoxHeader">
@@ -9,7 +9,7 @@ function StopBox({selectedStop, stopTimes, setSelectedStop, setStopTimes}) {
                     setStopTimes({});
                 }}>X</div>
                 <img className="logo" src="ttc.png"  alt="logo"/>
-				<div className="stopBoxTitle">{selectedStop.title}</div>
+				<div className="stopBoxTitle"><div className="busRouteNumber">{route}</div><div className="busRouteTitle">{selectedStop.title}</div></div>
 				<hr className="stopBoxDivider"/>
             </div>
 			{stopTimes?.length > 0

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ReactMapGL, {NavigationControl, ScaleControl, FullscreenControl } from "react-map-gl";
+import ReactMapGL, {FlyToInterpolator, WebMercatorViewport, NavigationControl, ScaleControl, FullscreenControl } from "react-map-gl";
 import "./App.css";
 
 import { fetchBusLocation, fetchStopTimes, fetchRouteInfo, fetchAllRoutes } from "./api";
@@ -10,7 +10,6 @@ import InfoBox from "./components/InfoBox";
 import StopBox from "./components/StopBox";
 
 function App() {
-	//const busRoute = '60';
 
 	const [viewport, setviewport] = useState({
 		latitude: 43.6534817,
@@ -20,13 +19,15 @@ function App() {
 		bearing: -16,
 		zoom: 10,
 	});
-
 	const [busLocation, setBusLocation] = useState([]);
-	const [routeInfo, setRouteInfo] = useState([]);
+	const [routeInfo, setRouteInfo] = useState({});
 	const [allRoutes, setAllRoutes] = useState([]);
-	const [busRoute, setBusRoute] = useState(60);
+	const [busRoute, setBusRoute] = useState();
 	const [selectedStop, setSelectedStop] = useState(null);
 	const [stopTimes, setStopTimes] = useState({});
+	const [bounds, setBounds] = useState();
+	
+
 
 	useEffect(() => {
 		const fetchAPI = async () => {
@@ -40,6 +41,7 @@ function App() {
 			setRouteInfo(await fetchRouteInfo(busRoute));
 		};
 		fetchAPI();
+			
 	}, [busRoute]);
 
 	useEffect(() => {
@@ -71,11 +73,49 @@ function App() {
 			}
 		};
 		window.addEventListener("keydown", listener);
-
 		return () => {
 			window.removeEventListener("keydown", listener);
 		};
 	}, []);
+
+	useEffect(() => {
+		if (Object.entries(routeInfo).length !== 0){
+			setBounds([routeInfo.bounds?.sw.lon, routeInfo.bounds?.sw.lat, routeInfo.bounds?.ne.lon, routeInfo.bounds?.ne.lat]);
+		}
+	
+	}, [routeInfo]);
+
+	useEffect(() => {
+		if (bounds?.length > 0 && bounds[0] !== undefined && Object.entries(routeInfo).length !== 0){
+			console.log("This 2 Ran", bounds);
+			changeViewPort();
+		}
+				
+	}, [bounds])
+
+
+	const changeViewPort = () => {
+		
+		const {longitude, latitude, zoom} = new WebMercatorViewport(viewport)
+            .fitBounds([[bounds[2], bounds[3]], [bounds[0], bounds[1]]], {
+              padding: 150,
+              offset: [400,0]
+			});
+		
+        const newviewport = {
+            viewport,
+            longitude,
+            latitude,
+            zoom,
+            transitionDuration: 1000,
+            transitionInterpolator: new FlyToInterpolator(),
+            
+		}
+		console.log("changeViewPort Called", bounds, busRoute,routeInfo);
+		setviewport(newviewport);
+
+		console.log("changeViewPort Called After", bounds, busRoute,routeInfo);
+	}
 
 	const stopClicked = (stop) => {
 		setSelectedStop(stop);
@@ -83,12 +123,13 @@ function App() {
 
 	const handleRouteChange = (event) => {
 		setBusRoute(event.target.getAttribute("tag"));
+		console.log("Route Change");		
 	};
 
 	return (
 		<div className="App">
 			{selectedStop ? (
-				<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} />
+				<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} route={busRoute}/>
 			) : (
 				<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange} />
 			)}
@@ -109,6 +150,7 @@ function App() {
 					setviewport(viewport);
 				}}
 			>
+				
 				<Path path={routeInfo.paths}></Path>
 
 				<Stops stops={routeInfo.stops} stopClicked={stopClicked}></Stops>

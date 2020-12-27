@@ -27,6 +27,7 @@ export const fetchRouteInfo = async (route) => {
         const{
             data
         } = await axios.get(url);
+        console.log(url)
 
         return data
         
@@ -43,7 +44,6 @@ export const fetchStopTimes = async (route, stopId) => {
             data,
         } = await axios.get(url);
         console.log(url)
-        console.log(data)
 
         return data
         
@@ -62,7 +62,6 @@ export const fetchAllRoutes = async () => {
             data
         } = await axios.get(url);
         console.log(url)
-        console.log(data);
 
         return data
         

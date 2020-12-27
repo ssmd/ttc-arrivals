@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactLoading from "react-loading";
 
 function InfoBox({routes, handleRouteChange}) {
     return (
@@ -7,12 +8,14 @@ function InfoBox({routes, handleRouteChange}) {
 				<img className="logo" src="ttc.png" alt="logo"/>
 				<div className="infoBoxTitle">Live Transit Map</div>
 				<hr className="infoBoxDivider"/>
+				
 			</div>
-			{routes?.length > 0 ?
+
+			{routes?.length > 0 ? 
 				routes.map(({id, title}) => (
 					<div tag={id} key={id} className="route" onClick={handleRouteChange}>
 						<div tag={id} className="routeNum">{id}</div>
-						<h1 tag={id} className="routeTitle">{title?.split("-", 2)[1].split("Night")[0].split("Express")[0]}</h1>
+						<h1 tag={id} className="routeTitle">{title?.split("-", 2)[1]?.split("Night")[0]?.split("Express")[0]}</h1>
 						<div tag={id} className="tags">
 						{title.split("Express").length > 1 && 
 							<div tag={id} className="tag">Express</div>
@@ -23,8 +26,13 @@ function InfoBox({routes, handleRouteChange}) {
 						</div>
 					</div>
 				))
-			: <div className="error">There was an Error fetching transit information. Please try again later.</div>
+			: 
+			
+				<div className="error">
+					There was an error fetching transit information. Please try again later.
+				</div>
 			}
+			
 		</div>
     )
 }

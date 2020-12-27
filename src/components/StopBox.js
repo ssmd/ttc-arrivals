@@ -1,6 +1,7 @@
 import React from "react";
+import ReactLoading from "react-loading";
 
-function StopBox({selectedStop, stopTimes, setSelectedStop, setStopTimes, route}) {
+function StopBox({selectedStop, stopTimes, setSelectedStop, setStopTimes, route, loading}) {
 	return (
 		<div className="stopBox">
             <div className="stopBoxHeader">
@@ -28,7 +29,12 @@ function StopBox({selectedStop, stopTimes, setSelectedStop, setStopTimes, route}
 								: ""}
 						</div>
 				  ))
-				: <div className="error">There are no buses running to this stop at this time.</div>}
+				: 
+				<div className="error">
+					{loading ? (<ReactLoading type={"spin"} color={"red"} height={50} width={50}/>) :
+						(<>There are no buses running to this stop at this time.</>)
+					}
+				</div>}
 		</div>
 	);
 }

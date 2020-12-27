@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactLoading from "react-loading";
 import ReactMapGL, {FlyToInterpolator, WebMercatorViewport, NavigationControl, ScaleControl, FullscreenControl } from "react-map-gl";
 import "./App.css";
 
@@ -11,11 +12,12 @@ import StopBox from "./components/StopBox";
 
 function App() {
 
+	const [loading, setLoading] = useState(true);
 	const [viewport, setviewport] = useState({
 		latitude: 43.6534817,
 		longitude: -79.3839347,
-		width: "100vw",
-		height: "100vh",
+		height: '100vh',
+    	width: '100vw',
 		bearing: -16,
 		zoom: 10,
 	});
@@ -26,21 +28,21 @@ function App() {
 	const [selectedStop, setSelectedStop] = useState(null);
 	const [stopTimes, setStopTimes] = useState({});
 	const [bounds, setBounds] = useState();
-	
-
 
 	useEffect(() => {
-		const fetchAPI = async () => {
+		setLoading(true);
+		setTimeout(async () => {
 			setAllRoutes(await fetchAllRoutes());
-		};
-		fetchAPI();
+		},0);
+		setLoading(false);
 	}, []);
 
 	useEffect(() => {
-		const fetchAPI = async () => {
+		setLoading(true);
+		setTimeout(async () => {
 			setRouteInfo(await fetchRouteInfo(busRoute));
-		};
-		fetchAPI();
+			setLoading(false);
+		},0);
 			
 	}, [busRoute]);
 
@@ -57,8 +59,12 @@ function App() {
 
 	useEffect(() => {
 		const fetchAPI = async () => {
+			
 			selectedStop && setStopTimes(await fetchStopTimes(busRoute, selectedStop?.id));
+			setLoading(false);
 		};
+		setStopTimes({});
+		setLoading(true);
 		fetchAPI();
 		const interval = setInterval(() => fetchAPI(), 20000);
 		return () => {
@@ -87,7 +93,6 @@ function App() {
 
 	useEffect(() => {
 		if (bounds?.length > 0 && bounds[0] !== undefined && Object.entries(routeInfo).length !== 0){
-			console.log("This 2 Ran", bounds);
 			changeViewPort();
 		}
 				
@@ -107,31 +112,23 @@ function App() {
             longitude,
             latitude,
             zoom,
-            transitionDuration: 1000,
+            transitionDuration: 1500,
             transitionInterpolator: new FlyToInterpolator(),
             
 		}
-		console.log("changeViewPort Called", bounds, busRoute,routeInfo);
 		setviewport(newviewport);
-
-		console.log("changeViewPort Called After", bounds, busRoute,routeInfo);
 	}
 
-	const stopClicked = (stop) => {
-		setSelectedStop(stop);
-	};
-
 	const handleRouteChange = (event) => {
-		setBusRoute(event.target.getAttribute("tag"));
-		console.log("Route Change");		
+		setBusRoute(event.target.getAttribute("tag"));		
 	};
 
 	return (
 		<div className="App">
 			{selectedStop ? (
-				<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} route={busRoute}/>
+				<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} route={busRoute} loading={loading}/>
 			) : (
-				<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange} />
+				<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange}/>
 			)}
 
 			<ReactMapGL
@@ -146,6 +143,8 @@ function App() {
 					} else if (viewport.pitch > 25) {
 						viewport.pitch = 25;
 					}
+					// viewport.height='100vh';
+					// viewport.width='100wv';
 
 					setviewport(viewport);
 				}}
@@ -153,7 +152,7 @@ function App() {
 				
 				<Path path={routeInfo.paths}></Path>
 
-				<Stops stops={routeInfo.stops} stopClicked={stopClicked}></Stops>
+				<Stops stops={routeInfo.stops} setSelectedStop={setSelectedStop}></Stops>
 
 				<BusLocation busLocation={busLocation}></BusLocation>
 

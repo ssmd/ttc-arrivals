@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactLoading from "react-loading";
+import './InfoBox.css'
 
 function InfoBox({routes, handleRouteChange}) {
     return (
@@ -10,7 +11,7 @@ function InfoBox({routes, handleRouteChange}) {
 				<hr className="infoBoxDivider"/>
 				
 			</div>
-
+			<div className="routes">
 			{routes?.length > 0 ? 
 				routes.map(({id, title}) => (
 					<div tag={id} key={id} className="route" onClick={handleRouteChange}>
@@ -32,6 +33,7 @@ function InfoBox({routes, handleRouteChange}) {
 					There was an error fetching transit information. Please try again later.
 				</div>
 			}
+			</div>
 			
 		</div>
     )

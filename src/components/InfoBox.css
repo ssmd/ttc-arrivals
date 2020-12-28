@@ -1,0 +1,142 @@
+.infoBox {
+	background-color: white;
+    position: absolute;
+    top: 0;
+	z-index: 1000;
+	width: 400px;
+	max-height: calc(100% - 60px);
+	margin: 20px;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
+	display: flex;
+	flex-flow: row wrap;
+	align-content: space-between;
+	justify-content: center;
+    overflow-y: auto;
+    transition: all 500ms ease-in-out;
+}
+
+.infoBoxHeader {
+	width: 100%;
+	padding: 20px 20px 0 20px;
+	position: sticky;
+	background: white;
+	top: 0;
+	z-index: 2;
+}
+
+.infoBoxTitle {
+	font-size: 30px;
+	font-weight: bold;
+	padding: 10px 0;
+}
+
+.logo {
+	height: 40px;
+}
+
+.infoBoxDivider {
+	height: 2px;
+	border-width: 0;
+	background-color: rgb(177, 174, 174);
+}
+
+.routes {
+    width: calc(100% - 20px);
+    padding: 10px 0;
+}
+
+.route {
+    min-height: 70px;
+    height: max-content; 
+    max-width: calc(100% - 20px);
+	margin: 10px;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
+	display: flex;
+    cursor: pointer;
+    word-break: break-word
+}
+
+.routeTitle {
+    height: max-content;
+	font-size: 25px;
+    font-weight: 600;
+    width: calc(100% - 20px);
+    margin: auto 0px;
+}
+
+.routeNum {
+    min-height: 50px;
+    min-width: 50px;
+	height: 50px;
+	width: 50px;
+	line-height: 50px;
+	text-align: center;
+	background-color: red;
+	color: white;
+	border-radius: 50%;
+	margin: auto 10px;
+	font-size: 25px;
+	font-weight: 600;
+}
+
+.tags {
+    height: max-content;
+    margin: auto 5px;
+    word-break: unset
+}
+
+.tag {
+	background-color: red;
+	color: white;
+	font-weight: bold;
+    width: max-content;
+    margin: auto;
+	padding: 3px;
+	border-radius: 5px;
+	z-index: 1;
+}
+
+
+@media screen and (max-width: 640px) {
+    .infoBox {
+        width: calc(100% - 40px);
+        height: calc(50% + 5px) ;
+        top: unset;
+        bottom: 0;
+    }  
+}
+
+@media screen and (max-width: 393px) {
+    .logo {
+        height: 30px;
+    }
+
+    .infoBoxTitle {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    
+    .route {
+        height: 60px;
+    }
+
+    .routeNum {
+        min-height: 40px;
+        min-width: 40px;
+        height: 40px;
+        width: 40px;
+        line-height: 40px;
+        font-size: 18px;
+    }
+
+    .routeTitle {
+        font-size: 18px;
+    }
+
+    .tag {
+        margin: 3px;
+        font-size: 14px;
+    } 
+}

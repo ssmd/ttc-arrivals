@@ -16,8 +16,7 @@ function App() {
 	const [viewport, setviewport] = useState({
 		latitude: 43.6534817,
 		longitude: -79.3839347,
-		height: '100vh',
-    	width: '100vw',
+
 		bearing: -16,
 		zoom: 10,
 	});
@@ -100,23 +99,41 @@ function App() {
 
 
 	const changeViewPort = () => {
-		
-		const {longitude, latitude, zoom} = new WebMercatorViewport(viewport)
+
+		if(window.innerWidth <= 640){
+			var {longitude, latitude, zoom} = new WebMercatorViewport(viewport)
             .fitBounds([[bounds[2], bounds[3]], [bounds[0], bounds[1]]], {
-              padding: 150,
+              padding: 50,
+
+			});
+			var newviewport = {
+				viewport,
+				longitude,
+				latitude,
+				zoom,
+				transitionDuration: 1500,
+				transitionInterpolator: new FlyToInterpolator(),
+				
+			}
+			setviewport(newviewport);
+		}else {
+			var {longitude, latitude, zoom} = new WebMercatorViewport(viewport)
+            .fitBounds([[bounds[2], bounds[3]], [bounds[0], bounds[1]]], {
+              padding: 50,
               offset: [400,0]
 			});
-		
-        const newviewport = {
-            viewport,
-            longitude,
-            latitude,
-            zoom,
-            transitionDuration: 1500,
-            transitionInterpolator: new FlyToInterpolator(),
-            
+			var newviewport = {
+				viewport,
+				longitude,
+				latitude,
+				zoom,
+				transitionDuration: 1500,
+				transitionInterpolator: new FlyToInterpolator(),
+				
+			}
+			setviewport(newviewport);
 		}
-		setviewport(newviewport);
+		
 	}
 
 	const handleRouteChange = (event) => {
@@ -131,42 +148,46 @@ function App() {
 				<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange}/>
 			)}
 
-			<ReactMapGL
-				className="map"
-				{...viewport}
-				mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-				mapStyle="mapbox://styles/seyon100/ckiz9arnc0sxe19o51hatbmuv?optimize=true"
-				containerStyle={{ flex: 1 }}
-				onViewportChange={(viewport) => {
-					if (viewport.pitch < 0) {
-						viewport.pitch = 0;
-					} else if (viewport.pitch > 25) {
-						viewport.pitch = 25;
-					}
-					// viewport.height='100vh';
-					// viewport.width='100wv';
+			<div className="mapContainer">
+				<ReactMapGL
+					className="map"
+					{...viewport}
+					width="100%"
+      				height="100%"
+					mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+					mapStyle="mapbox://styles/seyon100/ckiz9arnc0sxe19o51hatbmuv?optimize=true"
+					style={{ width: '100%' }}
+					onViewportChange={(viewport) => {
+						if (viewport.pitch < 0) {
+							viewport.pitch = 0;
+						} else if (viewport.pitch > 25) {
+							viewport.pitch = 25;
+						}
+						// viewport.height='100%';
+						// viewport.width='100%';
 
-					setviewport(viewport);
-				}}
-			>
-				
-				<Path path={routeInfo.paths}></Path>
+						setviewport(viewport);
+					}}
+				>
+					
+					<Path path={routeInfo.paths}></Path>
 
-				<Stops stops={routeInfo.stops} setSelectedStop={setSelectedStop}></Stops>
+					<Stops stops={routeInfo.stops} setSelectedStop={setSelectedStop}></Stops>
 
-				<BusLocation busLocation={busLocation}></BusLocation>
+					<BusLocation busLocation={busLocation}></BusLocation>
 
-				{/* Map Navigation Buttons */}
-				<div style={{ position: "absolute", right: 10, bottom: 70 }}>
-					<NavigationControl />
-				</div>
-				<div style={{ position: "absolute", right: 10, bottom: 30 }}>
-					<FullscreenControl />
-				</div>
-				<div style={{ position: "absolute", right: 60, bottom: 30 }}>
-					<ScaleControl maxWidth={100} unit={"metric"} />
-				</div>
-			</ReactMapGL>
+					{/* Map Navigation Buttons */}
+					<div style={{ position: "absolute", right: 10, bottom: 80 }}>
+						<NavigationControl />
+					</div>
+					<div style={{ position: "absolute", right: 10, bottom: 40 }}>
+						<FullscreenControl />
+					</div>
+					<div style={{ position: "absolute", right: 60, bottom: 40 }}>
+						<ScaleControl maxWidth={100} unit={"metric"} />
+					</div>
+				</ReactMapGL>
+			</div>
 		</div>
 	);
 }

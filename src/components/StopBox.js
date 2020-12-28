@@ -1,5 +1,6 @@
 import React from "react";
 import ReactLoading from "react-loading";
+import './StopBox.css'
 
 function StopBox({selectedStop, stopTimes, setSelectedStop, setStopTimes, route, loading}) {
 	return (

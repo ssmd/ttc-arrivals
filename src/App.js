@@ -188,6 +188,16 @@ function App() {
 					</div>
 				</ReactMapGL>
 			</div>
+
+			<div className="footer">
+				<p>
+					Made with ❤ by
+					<a href="https://github.com/seyon123" target="_blank" rel="noopener noreferrer">
+						{" "}
+						Seyon Rajagopal{" "}
+					</a>
+				</p>
+			</div>
 		</div>
 	);
 }

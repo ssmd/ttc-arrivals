@@ -135,7 +135,7 @@ function App() {
 				className="map"
 				{...viewport}
 				mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-				mapStyle="mapbox://styles/seyon100/ckiz9arnc0sxe19o51hatbmuv"
+				mapStyle="mapbox://styles/seyon100/ckiz9arnc0sxe19o51hatbmuv?optimize=true"
 				containerStyle={{ flex: 1 }}
 				onViewportChange={(viewport) => {
 					if (viewport.pitch < 0) {

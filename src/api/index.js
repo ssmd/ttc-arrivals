@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api = "http://restbus.info/api/";
+const api = process.env.REACT_APP_API;
 const agency = "ttc"
 
 
@@ -24,7 +24,6 @@ export const fetchRouteInfo = async (route) => {
         const{
             data
         } = await axios.get(url);
-        console.log(url)
 
         return data
         
@@ -39,7 +38,6 @@ export const fetchStopTimes = async (route, stopId) => {
         const{
             data,
         } = await axios.get(url);
-        console.log(url)
 
         return data
         
@@ -55,7 +53,6 @@ export const fetchAllRoutes = async () => {
         const{
             data
         } = await axios.get(url);
-        console.log(url)
 
         return data
         

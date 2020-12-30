@@ -12,7 +12,8 @@ import StopBox from "./components/StopBox";
 
 function App() {
 
-	const [loading, setLoading] = useState(true);
+	const [loadingStopTimes, setLoadingStopTimes] = useState(true);
+	const [loadingRoutes, setLoadingRoutes] = useState(true);
 	const [viewport, setviewport] = useState({
 		latitude: 43.6534817,
 		longitude: -79.3839347,
@@ -29,19 +30,31 @@ function App() {
 	const [bounds, setBounds] = useState();
 
 	useEffect(() => {
-		setLoading(true);
-		setTimeout(async () => {
+		const fetchAPI = async () => {
 			setAllRoutes(await fetchAllRoutes());
-		},0);
-		setLoading(false);
+			setLoadingRoutes(false);
+		};
+		setAllRoutes([]);
+		setLoadingRoutes(true);
+		fetchAPI();
+		const timeout = setTimeout(() => fetchAPI(), 500);
+		return () => {
+			clearTimeout(timeout);
+		};
 	}, []);
 
 	useEffect(() => {
-		setLoading(true);
-		setTimeout(async () => {
+
+		const fetchAPI = async () => {
 			setRouteInfo(await fetchRouteInfo(busRoute));
-			setLoading(false);
-		},0);
+			setLoadingRoutes(false);
+		};
+		setLoadingRoutes(true);
+		fetchAPI();
+		const timeout = setTimeout(() => fetchAPI(), 500);
+		return () => {
+			clearTimeout(timeout);
+		};
 			
 	}, [busRoute]);
 
@@ -60,10 +73,10 @@ function App() {
 		const fetchAPI = async () => {
 			
 			selectedStop && setStopTimes(await fetchStopTimes(busRoute, selectedStop?.id));
-			setLoading(false);
+			setLoadingStopTimes(false);
 		};
 		setStopTimes({});
-		setLoading(true);
+		setLoadingStopTimes(true);
 		fetchAPI();
 		const interval = setInterval(() => fetchAPI(), 20000);
 		return () => {
@@ -143,9 +156,9 @@ function App() {
 	return (
 		<div className="App">
 			{selectedStop ? (
-				<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} route={busRoute} loading={loading}/>
+				<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} route={busRoute} loading={setLoadingStopTimes}/>
 			) : (
-				<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange}/>
+				<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange} loading={loadingRoutes}/>
 			)}
 
 			<div className="mapContainer">
@@ -163,8 +176,6 @@ function App() {
 						} else if (viewport.pitch > 25) {
 							viewport.pitch = 25;
 						}
-						// viewport.height='100%';
-						// viewport.width='100%';
 
 						setviewport(viewport);
 					}}

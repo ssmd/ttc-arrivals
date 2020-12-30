@@ -1,7 +1,7 @@
 .infoBox {
 	background-color: white;
     position: absolute;
-    top: 0;
+    bottom: 20px;
 	z-index: 1000;
 	width: 400px;
 	max-height: calc(100% - 60px);
@@ -102,9 +102,10 @@
 @media screen and (max-width: 640px) {
     .infoBox {
         width: calc(100% - 40px);
-        height: calc(50% + 5px) ;
+        max-height: calc(50% + 5px) ;
         top: unset;
         bottom: 0;
+
     }  
 }
 

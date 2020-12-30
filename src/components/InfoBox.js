@@ -2,7 +2,7 @@ import React from 'react'
 import ReactLoading from "react-loading";
 import './InfoBox.css'
 
-function InfoBox({routes, handleRouteChange}) {
+function InfoBox({routes, handleRouteChange, loading}) {
     return (
         <div className="infoBox">
 			<div className="infoBoxHeader">
@@ -12,7 +12,7 @@ function InfoBox({routes, handleRouteChange}) {
 				
 			</div>
 			<div className="routes">
-			{routes?.length > 0 ? 
+			{routes?.length > 0 && !loading ? 
 				routes.map(({id, title}) => (
 					<div tag={id} key={id} className="route" onClick={handleRouteChange}>
 						<div tag={id} className="routeNum">{id}</div>
@@ -30,7 +30,9 @@ function InfoBox({routes, handleRouteChange}) {
 			: 
 			
 				<div className="error">
-					There was an error fetching transit information. Please try again later.
+					{loading ? (<ReactLoading type={"spin"} color={"red"} height={50} width={50}/>) :
+						<>There was an error fetching transit information. Please try again later.</>
+					}
 				</div>
 			}
 			</div>

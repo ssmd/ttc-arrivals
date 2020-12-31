@@ -18,3 +18,27 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #888;
 }
+
+:root {
+  --white: #FFFFFF;
+  --red: #ff0000;
+  --light: #FFFFFF;
+  --text: #191919;
+  
+  --background: #f8f8f8;
+  --background-alt: #FFFFFF;
+
+}
+
+.dark {
+  --light: #ff0000;
+  --background: #232323;
+  --background-alt: #2b2b2b;
+  --text: #f0ecec;
+}
+
+#root {
+  min-height: 100vh;
+  -webkit-transition: 300ms ease-in-out;
+  transition: 300ms ease-in-out;
+}

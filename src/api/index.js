@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api = process.env.REACT_APP_TESTING_API;
+const api = process.env.REACT_APP_API;
 const agency = "ttc"
 
 

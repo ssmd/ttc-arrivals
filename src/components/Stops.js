@@ -1,11 +1,11 @@
 import React from 'react'
-import { Marker } from 'react-map-gl';
+import { Marker } from '@urbica/react-map-gl';
 
 function Stops({stops, setSelectedStop}) {
     return (
         stops?.length > 0
             ? stops.map(({ id, lat, lon, title }, i) => (
-                    <Marker key={i} latitude={Number(lat)} longitude={Number(lon)} offsetLeft={-10} offsetTop={-10}>
+                    <Marker key={i} latitude={Number(lat)} longitude={Number(lon)}>
                         <button
                             className="busStopBtn"
                             onClick={(e) => {

@@ -1,15 +1,32 @@
 import React from 'react'
-import PolylineOverlay from './PolyLineOverlay'
+import { Layer, Source } from '@urbica/react-map-gl'
 
-function Path({path}) {
-    return (
-        path?.length > 0 ?
-            path.map(({points}, i) => (
-                <PolylineOverlay key={i} points={points?.map((p) => ([Number(p.lon), Number(p.lat)]))}/>
-            ))
-        : null
-        
-    )
+function Path({pathData}) {
+    return (pathData && pathData.length > 0) ? (
+        <>
+            <Source
+                id="route"
+                type="geojson"
+                data={{
+                    type: "FeatureCollection",
+                    features: pathData,
+                }}
+            />
+            <Layer
+                id="route"
+                type="line"
+                source="route"
+                layout={{
+                    "line-join": "round",
+                    "line-cap": "round",
+                }}
+                paint={{
+                    "line-color": "#ff0000",
+                    "line-width": 8,
+                }}
+            />
+        </>
+    ): null
 }
 
 export default Path

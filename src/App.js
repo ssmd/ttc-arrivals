@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import ReactLoading from "react-loading";
-import ReactMapGL, { FlyToInterpolator, WebMercatorViewport, NavigationControl, ScaleControl, FullscreenControl } from "react-map-gl";
+import ReactMapGL, { NavigationControl, ScaleControl, FullscreenControl, AttributionControl, Source, Layer } from "@urbica/react-map-gl";
 import "./App.css";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 import { fetchBusLocation, fetchStopTimes, fetchRouteInfo, fetchAllRoutes } from "./api";
 import Stops from "./components/Stops";
@@ -13,14 +13,16 @@ import StopBox from "./components/StopBox";
 function App() {
 	const [loadingStopTimes, setLoadingStopTimes] = useState(true);
 	const [loadingRoutes, setLoadingRoutes] = useState(true);
+	const [theme, setTheme] = useState("light");
 	const [viewport, setviewport] = useState({
 		latitude: 43.6534817,
 		longitude: -79.3839347,
-
 		bearing: -16,
 		zoom: 10,
 	});
 	const [busLocation, setBusLocation] = useState([]);
+	const [busPath, setBusPath] = useState([]);
+	const [pathData, setPathData] = useState([]);
 	const [routeInfo, setRouteInfo] = useState({});
 	const [allRoutes, setAllRoutes] = useState({});
 	const [search, setSearch] = useState("");
@@ -28,6 +30,11 @@ function App() {
 	const [selectedStop, setSelectedStop] = useState(null);
 	const [stopTimes, setStopTimes] = useState({});
 	const [bounds, setBounds] = useState();
+
+	const mapstyles = {
+		light: "mapbox://styles/seyon100/ckiz9arnc0sxe19o51hatbmuv?optimize=true",
+		dark: "mapbox://styles/mapbox/dark-v9?optimize=true",
+	};
 
 	useEffect(() => {
 		const fetchAPI = async () => {
@@ -92,6 +99,31 @@ function App() {
 		};
 	}, []);
 
+	useEffect(()=>{
+		const storetheme = localStorage.getItem("theme");
+		const body = document.querySelector("body");
+
+		if (storetheme === "dark") {
+			body.classList.add("dark");
+			setTheme("dark")
+		}else{
+			setTheme("light")
+		}
+	},[]);
+
+	useEffect(() => {
+		const body = document.querySelector("body");
+
+		if (theme === "dark"){
+			localStorage.setItem("theme", "dark");
+			body.classList.add("dark");
+		}else if (body.classList.contains("dark")) {
+			localStorage.clear();
+			body.classList.remove("dark");
+		}
+
+	}, [theme]);
+
 	useEffect(() => {
 		if (Object.entries(routeInfo).length !== 0) {
 			setBounds([routeInfo.bounds?.sw.lon, routeInfo.bounds?.sw.lat, routeInfo.bounds?.ne.lon, routeInfo.bounds?.ne.lat]);
@@ -104,47 +136,31 @@ function App() {
 		}
 	}, [bounds]);
 
+	// help convert path to GEOJSON format
+	useEffect(() => {
+		setBusPath(routeInfo?.paths?.map(({ points }) => points?.map((p) => [Number(p.lon), Number(p.lat)])));
+	}, [routeInfo]);
+
+	useEffect(() => {
+		setPathData(
+			busPath?.map((path) => ({
+				type: "Feature",
+				geometry: {
+					type: "LineString",
+					coordinates: path,
+				},
+			}))
+		);
+	}, [busPath]);
+
 	const changeViewPort = () => {
-		if (window.innerWidth <= 800) {
-			var { longitude, latitude, zoom } = new WebMercatorViewport(viewport).fitBounds(
-				[
-					[bounds[2], bounds[3]],
-					[bounds[0], bounds[1]],
-				],
-				{
-					padding: 50,
-				}
-			);
-			var newviewport = {
-				viewport,
-				longitude,
-				latitude,
-				zoom,
-				transitionDuration: 1500,
-				transitionInterpolator: new FlyToInterpolator(),
-			};
-			setviewport(newviewport);
-		} else {
-			var { longitude, latitude, zoom } = new WebMercatorViewport(viewport).fitBounds(
-				[
-					[bounds[2], bounds[3]],
-					[bounds[0], bounds[1]],
-				],
-				{
-					padding: 50,
-					offset: [400, 0],
-				}
-			);
-			var newviewport = {
-				viewport,
-				longitude,
-				latitude,
-				zoom,
-				transitionDuration: 1500,
-				transitionInterpolator: new FlyToInterpolator(),
-			};
-			setviewport(newviewport);
-		}
+		const newviewport = {
+			...viewport,
+			latitude: Math.min(bounds[1], bounds[3]) + (Math.max(bounds[1], bounds[3]) - Math.min(bounds[1], bounds[3])) / 2,
+			longitude: Math.min(bounds[0], bounds[2]) + (Math.max(bounds[0], bounds[2]) - Math.min(bounds[0], bounds[2])) / 2,
+			zoom: 12,
+		};
+		setviewport(newviewport);
 	};
 
 	const handleRouteChange = (event) => {
@@ -154,7 +170,10 @@ function App() {
 
 	return (
 		<div className="App">
-			<div className="menuButton"></div>
+			<div className="themeToggle">
+				<button id="lightBtn" className="themeBtn" onClick={() => setTheme("light")}>🌞</button>
+				<button id="darkBtn" className="themeBtn" onClick={() => setTheme("dark")}>🌙</button>
+			</div>
 
 			{selectedStop ? (
 				<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} route={busRoute} loading={loadingStopTimes} />
@@ -166,39 +185,50 @@ function App() {
 				<ReactMapGL
 					className="map"
 					{...viewport}
-					mapOptions={{
-						customAttribution: '<a href="https://github.com/seyon123/" target="_blank">© Seyon Rajagopal</a>',
-					}}
-					width="100%"
-					height="100%"
-					mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-					mapStyle="mapbox://styles/seyon100/ckiz9arnc0sxe19o51hatbmuv?optimize=true"
-					onViewportChange={(viewport) => {
-						if (viewport.pitch < 0) {
-							viewport.pitch = 0;
-						} else if (viewport.pitch > 25) {
-							viewport.pitch = 25;
-						}
-
-						setviewport(viewport);
-					}}
+					style={{ width: "100%", height: "100%" }}
+					accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+					mapStyle={mapstyles[theme]}
+					viewportChangeMethod="flyTo"
+					viewportChangeOptions={{ duration: 1000 }}
+					attributionControl={false}
+					pitch={5}
+					onViewportChange={setviewport}
 				>
-					<Path path={routeInfo.paths}></Path>
+					{<Path pathData={pathData}></Path>}
+					{/* {pathData && pathData.length > 0 && (
+						<>
+							<Source
+								id="route"
+								type="geojson"
+								data={{
+									type: "FeatureCollection",
+									features: pathData,
+								}}
+							/>
+							<Layer
+								id="route"
+								type="line"
+								source="route"
+								layout={{
+									"line-join": "round",
+									"line-cap": "round",
+								}}
+								paint={{
+									"line-color": "#ff0000",
+									"line-width": 8,
+								}}
+							/>
+						</>
+					)} */}
 
 					<Stops stops={routeInfo.stops} setSelectedStop={setSelectedStop}></Stops>
-
 					<BusLocation busLocation={busLocation}></BusLocation>
-
-					{/* Map Navigation Buttons */}
-					<div style={{ position: "absolute", right: 10, bottom: 80 }}>
-						<NavigationControl />
-					</div>
-					<div style={{ position: "absolute", right: 10, bottom: 40 }}>
-						<FullscreenControl />
-					</div>
-					<div style={{ position: "absolute", right: 60, bottom: 40 }}>
-						<ScaleControl maxWidth={100} unit={"metric"} />
-					</div>
+					
+					<AttributionControl compact={true} position="bottom-right" customAttribution='<a href="https://github.com/seyon123" target="_blank">© Seyon Rajagopal</a>' />
+					<ScaleControl position="bottom-right" />
+					<NavigationControl showCompass showZoom position="bottom-right" />
+					<FullscreenControl position="top-right" />
+					
 				</ReactMapGL>
 			</div>
 		</div>

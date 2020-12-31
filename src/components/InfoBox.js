@@ -1,9 +1,8 @@
-import React, {useState} from 'react'
+import React from 'react'
 import ReactLoading from "react-loading";
 import './InfoBox.css'
 
 function InfoBox({routes, handleRouteChange, loading, search, setSearch}) {
-
 	
     return (
         <div className="infoBox">

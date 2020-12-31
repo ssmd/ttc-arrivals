@@ -15,6 +15,7 @@ export default class PolylineOverlay extends PureComponent {
         const pixel = project([point[0], point[1]])
         ctx.lineTo(pixel[0], pixel[1])
       })
+      
       ctx.stroke()
     }
   }

@@ -20,7 +20,7 @@
     line-height: 30px;
     text-align: center;
     font-weight: bold;
-    background-color: red;
+    background-color: #ff0000;
     border-radius: 50%;
     color: white;
     position: absolute;
@@ -57,7 +57,7 @@
     width: 50px;
     line-height: 50px;
     text-align: center;
-    background-color: red;
+    background-color: #ff0000;
     color: white;
     border-radius: 50%;
     margin: auto 10px;
@@ -79,7 +79,7 @@
     width: 40px;
     line-height: 40px;
     text-align: center;
-    background-color: red;
+    background-color: #ff0000;
     color: white;
     border-radius: 50%;
     margin: auto 10px;

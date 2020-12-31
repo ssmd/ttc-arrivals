@@ -32,7 +32,7 @@ function StopBox({selectedStop, stopTimes, setSelectedStop, setStopTimes, route,
 				  ))
 				: 
 				<div className="error">
-					{loading ? (<ReactLoading type={"spin"} color={"red"} height={50} width={50}/>) :
+					{loading && ((typeof stopTimes === 'object') && (!Array.isArray(stopTimes))) ? (<ReactLoading type={"spin"} color={"red"} height={50} width={50}/>) :
 						(<>There are no buses running to this stop at this time.</>)
 					}
 				</div>}

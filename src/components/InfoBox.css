@@ -1,7 +1,7 @@
 .infoBox {
 	background-color: white;
     position: absolute;
-    bottom: 20px;
+    top: 0px;
 	z-index: 1000;
 	width: 400px;
 	max-height: calc(100% - 60px);
@@ -33,6 +33,15 @@
 
 .logo {
 	height: 40px;
+}
+
+.searchBox {
+    width: calc(100% - 10px);
+    padding: 5px;
+    margin: 10px auto;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 2px solid #ff0000;
 }
 
 .infoBoxDivider {
@@ -73,7 +82,7 @@
 	width: 50px;
 	line-height: 50px;
 	text-align: center;
-	background-color: red;
+	background-color: #ff0000;
 	color: white;
 	border-radius: 50%;
 	margin: auto 10px;
@@ -88,7 +97,7 @@
 }
 
 .tag {
-	background-color: red;
+	background-color: #ff0000;
 	color: white;
 	font-weight: bold;
     width: max-content;

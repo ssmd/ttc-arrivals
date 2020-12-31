@@ -8,13 +8,13 @@
   height: 30px;
   padding: 5px;
   background-color: white;
-  border: 2px solid red;
+  border: 2px solid #ff0000;
 	border-radius: 50%;
 }
 
 .busStopBtn {
   border: 3px solid;
-  border-color: red;
+  border-color: #ff0000;
   background-color: white;
   width: 20px;
   height: 20px;
@@ -38,14 +38,24 @@
 
 
 .footer {
-  position: absolute;
-  top: 0;
-  margin: 0 calc(50% - (250px / 2));
+  position: sticky;
+  bottom: 0;
+  margin: 0 auto;
   text-align: center;
-  border-radius: 0 0 10px 10px;
+  border-radius: 10px 10px 0 0;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
   background-color: white;
   z-index: 1001;
   padding: 5px;
   width: 250px;
+}
+
+.footer a {
+  color: #ff0000;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: #ff0000;
+  text-decoration: underline;
 }

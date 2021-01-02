@@ -111,6 +111,13 @@
 	z-index: 1;
 }
 
+@media screen and (max-width: 1500px) {
+	.infoBox {
+		max-height: calc(100% - 120px);
+		top: 60px;
+	}
+}
+
 @media screen and (max-width: 640px) {
 	.infoBox {
 		width: calc(100% - 40px);

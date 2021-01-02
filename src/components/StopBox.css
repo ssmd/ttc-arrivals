@@ -2,6 +2,7 @@
   background-color: var(--background);
   color: var(--text);
   position: absolute;
+  top: 0px;
   z-index: 1000;
   width: 400px;
   max-height: calc(100% - 60px);
@@ -119,6 +120,13 @@
   font-size: 16px;
   margin: auto 3px;
   font-weight: bold;
+}
+
+@media screen and (max-width: 1500px) {
+	.stopBox {
+		max-height: calc(100% - 120px);
+		top: 60px;
+	}
 }
 
 @media screen and (max-width: 640px) {

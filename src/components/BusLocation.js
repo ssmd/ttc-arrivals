@@ -5,7 +5,10 @@ function BusLocation({ busLocation }) {
 	return busLocation?.length > 0
 		? busLocation.map(({ id, lat, lon, heading }) => (
 				<Marker key={id} latitude={Number(lat)} longitude={Number(lon)} rotation={heading} rotationAlignment="map" >
-					<img className="busMarker" src="bus.png"  alt="Bus_Marker"/>
+					<div className="arrow">
+						<div className="arrowInner"></div>
+					</div>
+					<img className="busMarker" src="bus.png"  alt="Bus_Logo"/>
 				</Marker>
 		  ))
 		: null;

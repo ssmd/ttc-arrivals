@@ -4,7 +4,7 @@ var cors = require("cors");
 const express = require("express");
 var app = express();
 
-var whitelist = ["https://ttcarrivals.web.app", "http://localhost:3000", "https://ttcarrivals.firebaseapp.com"];
+var whitelist = ["https://ttcarrivals.web.app", "https://ttcarrivals.firebaseapp.com"];
 app.use(cors())
 app.use("/", function (req, res, next) {
     let isDomainAllowed = whitelist.indexOf(req.header("Origin")) !== -1;

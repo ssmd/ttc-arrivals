@@ -2,15 +2,13 @@ import React from 'react'
 import ReactLoading from "react-loading";
 import './InfoBox.css'
 
-function InfoBox({routes, handleRouteChange, loading, search, setSearch}) {
+function InfoBox({routes, handleRouteChange, loading, search, setSearch, setMenu}) {
 	
     return (
         <div className="infoBox">
 			<div className="infoBoxHeader">
-			<div className="closeBtn" onClick={() => {
-                    
-                }}>X</div>
-				<img className="logo" src="ttc.png" alt="logo"/>
+			<div className="closeBtn" onClick={()=>setMenu(true)}>X</div>
+				<img className="logo" src="ttc.png" alt="ttc_logo"/>
 				<div className="infoBoxTitle">Live Transit Map</div>
 				<input className="searchBox" placeholder="Search for a Route..." value={search} onChange={(e) => setSearch(e.target.value)}></input>
 				<hr className="infoBoxDivider"/>

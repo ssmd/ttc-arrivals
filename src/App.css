@@ -3,18 +3,75 @@
 	width: 100vw;
 }
 
+.menuBtn {
+	position: fixed;
+	z-index: 55;
+	top: 10px;
+	left: 10px;
+	border-radius: 50%;
+	background-color: var(--background);
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
+	color: var(--red);
+	padding: 10px;
+	font-size: 30px;
+	line-height: 30px;
+	text-align: center;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+}
+
+.routeDisplayContainer {
+	width: 100%;
+	position: fixed;
+	z-index: 50;
+	top: 10px;
+}
+
+.routeDisplay {
+	min-height: 60px;
+	height: 60px;
+	border-radius: 100px;
+	background-color: var(--background);
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
+	width: fit-content;
+	display: flex;
+	margin: 0 auto;
+}
+
+.routeDisplayNum {
+	min-height: 60px;
+	min-width: 60px;
+	height: 60px;
+	width: 60px;
+	line-height: 60px;
+	text-align: center;
+	background-color: var(--red);
+	color: var(--white);
+	border-radius: 50%;
+	font-size: 30px;
+	font-weight: 600;
+}
+
+.routeDisplayTitle {
+	font-size: 24px;
+	font-weight: bold;
+	margin: auto 15px;
+	color: var(--text);
+}
+
 .busMarker {
 	width: 30px;
 	height: 30px;
 	padding: 5px;
 	background-color: var(--white);
-	border: 2px solid #ff0000;
+	border: 2px solid var(--red);
 	border-radius: 50%;
 }
 
 .busStopBtn {
 	border: 3px solid;
-	border-color: #ff0000;
+	border-color: var(--red);
 	background-color: var(--background);
 	width: 20px;
 	height: 20px;
@@ -28,6 +85,27 @@
 	display: none;
 }
 
+.arrow {
+  width: 0; 
+  height: 0; 
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #ff0000;
+  margin: 5px auto;
+}
+
+.arrowInner {
+	position: relative;
+    bottom: -3px;
+    left: -6px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+	border-bottom: 6px solid #ffffff;
+	margin: 5px auto;
+}
+
 .error {
 	text-align: center;
 	padding: 10px;
@@ -39,10 +117,10 @@
 .themeToggle {
 	position: fixed;
 	margin: 6px;
-	top: 40px;
+	top: 0px;
 	right: 0px;
 	width: 33px;
-	z-index: 5;
+	z-index: 55;
 }
 
 .themeBtn {
@@ -80,4 +158,58 @@
 
 .footer a:hover {
 	text-decoration: underline;
+}
+
+
+@media screen and (max-width: 640px) {
+	
+	.routeDisplay {
+		min-height: 40px;
+		height: 40px;
+
+	}
+	
+	.routeDisplayNum {
+		min-height: 40px;
+		min-width: 40px;
+		height: 40px;
+		width: 40px;
+		line-height: 40px;
+		font-size: 21px;
+	}
+	
+	.routeDisplayTitle {
+		font-size: 18px;
+	}
+}
+
+@media screen and (max-width: 450px) {
+	.routeDisplayTitle {
+		max-width: 130px;
+	}
+	.routeDisplay {
+		min-height: 35px;
+		height: 35px;
+	}
+	.routeDisplayNum {
+		min-height: 35px;
+		min-width: 35px;
+		height: 35px;
+		width: 35px;
+		line-height: 35px;
+		font-size: 18px;
+	}
+
+	.routeDisplayTitle {
+		font-size: 14px;
+	}
+
+	.menuBtn {
+		left: 5px;
+		padding: 7.5px;
+		font-size: 20px;
+		line-height: 20px;
+		width: 20px;
+		height: 20px;
+	}
 }

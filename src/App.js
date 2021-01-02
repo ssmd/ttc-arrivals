@@ -14,6 +14,7 @@ function App() {
 	const [loadingStopTimes, setLoadingStopTimes] = useState(true);
 	const [loadingRoutes, setLoadingRoutes] = useState(true);
 	const [theme, setTheme] = useState("light");
+	const [menu, setMenu] = useState(false);
 	const [viewport, setviewport] = useState({
 		latitude: 43.6534817,
 		longitude: -79.3839347,
@@ -44,10 +45,6 @@ function App() {
 		setAllRoutes({});
 		setLoadingRoutes(true);
 		fetchAPI();
-		const timeout = setTimeout(() => fetchAPI(), 500);
-		return () => {
-			clearTimeout(timeout);
-		};
 	}, []);
 
 	useEffect(() => {
@@ -56,10 +53,6 @@ function App() {
 		};
 		setLoadingRoutes(true);
 		fetchAPI();
-		const timeout = setTimeout(() => fetchAPI(), 500);
-		return () => {
-			clearTimeout(timeout);
-		};
 	}, [busRoute]);
 
 	useEffect(() => {
@@ -171,15 +164,30 @@ function App() {
 	return (
 		<div className="App">
 			<div className="themeToggle">
-				<button id="lightBtn" className="themeBtn" onClick={() => setTheme("light")}>🌞</button>
-				<button id="darkBtn" className="themeBtn" onClick={() => setTheme("dark")}>🌙</button>
+				<button id="lightBtn" className="themeBtn" onClick={() => setTheme("light")}>
+					🌞
+				</button>
+				<button id="darkBtn" className="themeBtn" onClick={() => setTheme("dark")}>
+					🌙
+				</button>
 			</div>
 
 			{selectedStop ? (
-				<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} route={busRoute} loading={loadingStopTimes} />
-			) : (
-				<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange} loading={loadingRoutes} search={search} setSearch={setSearch} />
+					<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} route={busRoute} loading={loadingStopTimes} setMenu={setMenu}/>
+				) : !menu ? (
+					<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange} loading={loadingRoutes} search={search} setSearch={setSearch} setMenu={setMenu}/>
+				): (<div className="menuBtn" onClick={() => setMenu(false)}><i className="fas fa-bars"></i></div>)
+			}
+
+				
+			{busRoute && (
+				<div className="routeDisplayContainer">
+					<div className="routeDisplay">
+						<div className="routeDisplayNum">{busRoute}</div> <div className="routeDisplayTitle"> {routeInfo?.title}</div>
+					</div>
+				</div>
 			)}
+
 
 			<div className="mapContainer">
 				<ReactMapGL
@@ -194,41 +202,14 @@ function App() {
 					pitch={5}
 					onViewportChange={setviewport}
 				>
-					{<Path pathData={pathData}></Path>}
-					{/* {pathData && pathData.length > 0 && (
-						<>
-							<Source
-								id="route"
-								type="geojson"
-								data={{
-									type: "FeatureCollection",
-									features: pathData,
-								}}
-							/>
-							<Layer
-								id="route"
-								type="line"
-								source="route"
-								layout={{
-									"line-join": "round",
-									"line-cap": "round",
-								}}
-								paint={{
-									"line-color": "#ff0000",
-									"line-width": 8,
-								}}
-							/>
-						</>
-					)} */}
-
+					<Path pathData={pathData}></Path>
 					<Stops stops={routeInfo.stops} setSelectedStop={setSelectedStop}></Stops>
 					<BusLocation busLocation={busLocation}></BusLocation>
-					
-					<AttributionControl compact={true} position="bottom-right" customAttribution='<a href="https://github.com/seyon123" target="_blank">© Seyon Rajagopal</a>' />
+
+					<AttributionControl compact={true} position="bottom-right" customAttribution='<a href="https://github.com/seyon123" target="_blank" rel="noopener noreferrer">© Seyon Rajagopal</a>' />
 					<ScaleControl position="bottom-right" />
 					<NavigationControl showCompass showZoom position="bottom-right" />
-					<FullscreenControl position="top-right" />
-					
+					<FullscreenControl position="bottom-right" />
 				</ReactMapGL>
 			</div>
 		</div>

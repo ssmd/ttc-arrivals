@@ -1,4 +1,4 @@
-#TTC Arrivals
+# TTC Arrivals
 
 ![Website Preview](public/background.png)
 

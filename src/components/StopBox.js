@@ -2,14 +2,13 @@ import React from "react";
 import ReactLoading from "react-loading";
 import './StopBox.css'
 
-function StopBox({selectedStop, stopTimes, setSelectedStop, setStopTimes, route, loading, setMenu}) {
+function StopBox({selectedStop, stopTimes, setSelectedStop, setStopTimes, route, loading}) {
 	return (
 		<div className="stopBox">
             <div className="stopBoxHeader">
                 <div className="closeBtn" onClick={() => {
                     setSelectedStop(null);
 					setStopTimes({});
-					setMenu(false)
                 }}>X</div>
                 <img className="logo" src="ttc.png"  alt="ttc_logo"/>
 				<div className="stopBoxTitle"><div className="busRouteNumber">{route}</div><div className="busRouteTitle">{selectedStop.title}</div></div>

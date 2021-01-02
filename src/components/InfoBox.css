@@ -121,9 +121,8 @@
 @media screen and (max-width: 640px) {
 	.infoBox {
 		width: calc(100% - 40px);
-		max-height: calc(75% + 5px);
-		top: unset;
-		bottom: 0;
+		max-height: calc(100% - 120px);
+		top: 80px;
 	}
 }
 

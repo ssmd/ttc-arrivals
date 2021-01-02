@@ -146,6 +146,7 @@ function App() {
 		);
 	}, [busPath]);
 
+
 	const changeViewPort = () => {
 		const newviewport = {
 			...viewport,
@@ -158,6 +159,7 @@ function App() {
 
 	const handleRouteChange = (event) => {
 		setBusRoute(event.target.getAttribute("tag"));
+		setMenu(true)
 		setSearch("");
 	};
 
@@ -173,7 +175,7 @@ function App() {
 			</div>
 
 			{selectedStop ? (
-					<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} route={busRoute} loading={loadingStopTimes} setMenu={setMenu}/>
+					<StopBox selectedStop={selectedStop} stopTimes={stopTimes} setSelectedStop={setSelectedStop} setStopTimes={setStopTimes} route={busRoute} loading={loadingStopTimes}/>
 				) : !menu ? (
 					<InfoBox routes={allRoutes} handleRouteChange={handleRouteChange} loading={loadingRoutes} search={search} setSearch={setSearch} setMenu={setMenu}/>
 				): (<div className="menuBtn" onClick={() => setMenu(false)}><i className="fas fa-bars"></i></div>)

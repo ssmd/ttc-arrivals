@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ReactMapGL, { NavigationControl, ScaleControl, FullscreenControl, AttributionControl, Source, Layer } from "@urbica/react-map-gl";
+import ReactMapGL, { NavigationControl, FullscreenControl, AttributionControl } from "@urbica/react-map-gl";
 import "./App.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -207,7 +207,6 @@ function App() {
 					<BusLocation busLocation={busLocation}></BusLocation>
 
 					<AttributionControl compact={true} position="bottom-right" customAttribution='<a href="https://github.com/seyon123" target="_blank" rel="noopener noreferrer">© Seyon Rajagopal</a>' />
-					<ScaleControl position="bottom-right" />
 					<NavigationControl showCompass showZoom position="bottom-right" />
 					<FullscreenControl position="bottom-right" />
 				</ReactMapGL>

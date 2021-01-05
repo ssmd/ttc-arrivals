@@ -16,12 +16,14 @@ function App() {
 	const [loadingRoutes, setLoadingRoutes] = useState(true);
 	const [theme, setTheme] = useState("light");
 	const [menu, setMenu] = useState(false);
+	const [notification, setNotification] = useState(false);
 	const [viewport, setviewport] = useState({
 		latitude: 43.6534817,
 		longitude: -79.3839347,
 		bearing: -16,
 		zoom: 10,
 	});
+	const [direction, setDirection] = useState("");
 	const [busLocation, setBusLocation] = useState([]);
 	const [busPath, setBusPath] = useState([]);
 	const [pathData, setPathData] = useState([]);
@@ -160,7 +162,11 @@ function App() {
 
 	const handleRouteChange = (event) => {
 		setBusRoute(event.target.getAttribute("tag"));
-		setMenu(true)
+		console.log(window.innerWidth);
+		if(window.innerWidth <= 640){
+			setMenu(true)
+		}
+		
 		setSearch("");
 	};
 
@@ -188,17 +194,33 @@ function App() {
 					<div className="routeDisplay">
 						<div className="routeDisplayNum">{busRoute}</div> <div className="routeDisplayTitle"> {routeInfo?.title}</div>
 					</div>
+					<div className="routeBranchContainer">
+					{/* {routeInfo?.directions?.length > 0 && (
+							routeInfo.directions.map(({id, title, shortTitle}) => (
+								<div key={id} className="branchItem"><div className="routeBranch">{(title.split("- ")[1].split(" ")[0]).toUpperCase()}</div> <div className="routeBranchDirection">{shortTitle}</div> </div>
+							))
+						)
+					} */}
+					</div>
 				</div>
 			)}
 
-			<div className="notification"><i className="fas fa-bell"></i></div>
-
+			 
+			<div className="notification" onClick={() => setNotification(!notification)}><i className="fas fa-exclamation-triangle"></i></div>
+			{notification &&
 			<div className="alerts">
+				{theme === "dark" ?
 				<Timeline
 					dataSource={{ sourceType: "profile", screenName: "TTCnotices" }}
-					options={{ chrome: "noheader, nofooter", width: "400", height: "calc(100vh - 60px)" }}
+					options={{ chrome: "noheader, nofooter", width: "400", height: "calc(100vh - 60px)", theme: "dark" }}
 				/>
+				:
+				<Timeline
+					dataSource={{ sourceType: "profile", screenName: "TTCnotices" }}
+					options={{ chrome: "noheader, nofooter", width: "400", height: "calc(100vh - 60px)"}}
+				/>}
 			</div>
+			}
 
 
 			<div className="mapContainer">

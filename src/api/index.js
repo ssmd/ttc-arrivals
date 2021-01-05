@@ -24,7 +24,7 @@ export const fetchRouteInfo = async (route) => {
         const{
             data
         } = await axios.get(url);
-
+        console.log(url)
         return data
         
     } catch (error) {

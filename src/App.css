@@ -60,6 +60,42 @@
 	color: var(--text);
 }
 
+.routeBranchContainer {
+	margin: 0 auto;
+	border-radius: 50px;
+	min-height: 40px;
+	height: 40px;
+	width: fit-content;
+	display: flex;
+	background-color: var(--background);
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
+}
+
+.branchItem {
+	display: flex;
+}
+
+.routeBranch {
+	min-height: 40px;
+	min-width: 40px;
+	height: 40px;
+	width: 40px;
+	line-height: 40px;
+	text-align: center;
+	background-color: var(--red);
+	color: var(--white);
+	border-radius: 50%;
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.routeBranchDirection {
+	font-size: 14px;
+	font-weight: bold;
+	margin: auto 10px;
+	color: var(--text);
+}
+
 .busMarker {
 	width: 30px;
 	height: 30px;
@@ -68,6 +104,11 @@
 	border: 2px solid var(--red);
 	border-radius: 50%;
 }
+
+
+/* .markerContainer {
+	margin-top: -30px;
+} */
 
 .busStopBtn {
 	border: 3px solid;
@@ -83,6 +124,16 @@
 	width: 20px;
 	height: 20px;
 	display: none;
+}
+
+.routename {
+	text-align: center;
+	font-weight: bold;
+	padding: 0 2px;
+	margin: 5px auto;
+	border-radius: 10px;
+	background-color: var(--red);
+	color: var(--white);
 }
 
 .arrow {
@@ -139,7 +190,7 @@
 
 .notification {
 	position: fixed;
-	z-index: 55;
+	z-index: 1002;
 	top: 10px;
 	right: 60px;
 	border-radius: 50%;
@@ -147,7 +198,7 @@
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px 0px;
 	color: var(--red);
 	padding: 10px;
-	font-size: 30px;
+	font-size: 20px;
 	line-height: 30px;
 	text-align: center;
 	width: 30px;
@@ -157,7 +208,7 @@
 
 .alerts {
 	position: absolute;
-	z-index: 54;
+	z-index: 1001;
 	top: 0;
 	right: 0;
 	overflow: hidden;
@@ -170,7 +221,7 @@
 .footer {
 	position: sticky;
 	color: var(--text);
-	bottom: 0;
+	bottom: -1px;
 	margin: 0 auto;
 	text-align: center;
 	border-radius: 10px 10px 0 0;
@@ -238,6 +289,16 @@
 		left: 5px;
 		padding: 7.5px;
 		font-size: 20px;
+		line-height: 20px;
+		width: 20px;
+		height: 20px;
+	}
+
+	.notification {
+		top: 90px;
+		right: 6px;
+		padding: 7.5px;
+		font-size: 18px;
 		line-height: 20px;
 		width: 20px;
 		height: 20px;

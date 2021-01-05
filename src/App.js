@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactMapGL, { NavigationControl, FullscreenControl, AttributionControl } from "@urbica/react-map-gl";
 import "./App.css";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { Timeline } from 'react-twitter-widgets'
 
 import { fetchBusLocation, fetchStopTimes, fetchRouteInfo, fetchAllRoutes } from "./api";
 import Stops from "./components/Stops";
@@ -189,6 +190,15 @@ function App() {
 					</div>
 				</div>
 			)}
+
+			<div className="notification"><i className="fas fa-bell"></i></div>
+
+			<div className="alerts">
+				<Timeline
+					dataSource={{ sourceType: "profile", screenName: "TTCnotices" }}
+					options={{ chrome: "noheader, nofooter", width: "400", height: "calc(100vh - 60px)" }}
+				/>
+			</div>
 
 
 			<div className="mapContainer">

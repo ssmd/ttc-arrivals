@@ -162,7 +162,7 @@ function App() {
 
 	const handleRouteChange = (event) => {
 		setBusRoute(event.target.getAttribute("tag"));
-		console.log(window.innerWidth);
+
 		if(window.innerWidth <= 640){
 			setMenu(true)
 		}
@@ -193,14 +193,6 @@ function App() {
 				<div className="routeDisplayContainer">
 					<div className="routeDisplay">
 						<div className="routeDisplayNum">{busRoute}</div> <div className="routeDisplayTitle"> {routeInfo?.title}</div>
-					</div>
-					<div className="routeBranchContainer">
-					{/* {routeInfo?.directions?.length > 0 && (
-							routeInfo.directions.map(({id, title, shortTitle}) => (
-								<div key={id} className="branchItem"><div className="routeBranch">{(title.split("- ")[1].split(" ")[0]).toUpperCase()}</div> <div className="routeBranchDirection">{shortTitle}</div> </div>
-							))
-						)
-					} */}
 					</div>
 				</div>
 			)}

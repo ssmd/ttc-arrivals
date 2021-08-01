@@ -10,7 +10,7 @@ function StopBox({selectedStop, stopTimes, setSelectedStop, setStopTimes, route,
                     setSelectedStop(null);
 					setStopTimes({});
                 }}>X</div>
-                <img className="logo" src="ttc.png"  alt="ttc_logo"/>
+                <img className="logo" src="ttc.png"  alt="TTC Logo"/>
 				<div className="stopBoxTitle"><div className="busRouteNumber">{route}</div><div className="busRouteTitle">{selectedStop.title}</div></div>
 				<hr className="stopBoxDivider"/>
             </div>

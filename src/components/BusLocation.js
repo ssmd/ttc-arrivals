@@ -16,7 +16,7 @@ function BusLocation({ busLocation, selectedBranch }) {
 					<div className="arrow">
 						<div className="arrowInner"></div>
 					</div>
-					<img className="busMarker" src="bus.png"  alt="Bus_Logo"/>
+					<img className="busMarker" src="bus.png"  alt="TTC Bus"/>
 				</div>
 			</Marker>
 		  ))

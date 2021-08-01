@@ -8,7 +8,7 @@ function InfoBox({routes, handleRouteChange, loading, search, setSearch, setMenu
         <div className="infoBox">
 			<div className="infoBoxHeader">
 			<div className="closeBtn" onClick={()=>setMenu(true)}>X</div>
-				<img className="logo" src="ttc.png" alt="ttc_logo"/>
+				<img className="logo" src="ttc.png" alt="TTC Logo"/>
 				<div className="infoBoxTitle">Live Transit Map</div>
 				<input className="searchBox" placeholder="Search for a Route..." value={search} onChange={(e) => setSearch(e.target.value)}></input>
 				<hr className="infoBoxDivider"/>

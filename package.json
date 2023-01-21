@@ -13,7 +13,7 @@
     "react-dom": "^17.0.2",
     "react-loading": "^2.0.3",
     "react-multi-carousel": "^2.6.3",
-    "react-scripts": "4.0.1",
+    "react-scripts": "4.0.3",
     "react-twitter-widgets": "^1.10.0",
     "web-vitals": "^0.2.4",
     "workbox-background-sync": "^5.1.4",
